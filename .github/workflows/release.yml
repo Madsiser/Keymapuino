@@ -1,0 +1,45 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Uruchamia workflow na tagach zaczynających się od 'v'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]  # Użyj Windows i Linux
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller  # Jeśli potrzebujesz PyInstaller
+
+      - name: Run build script
+        run: |
+          if [ ${{ runner.os }} == 'Windows' ]; then
+            .\build.bat
+          else
+            chmod +x build.sh
+            ./build.sh
+          fi
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Używa tagu jako numeru wersji
+          files: |
+            release/windows/*
+            release/linux/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
