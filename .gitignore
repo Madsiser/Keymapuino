@@ -3,3 +3,7 @@ build
 *.spec
 release/*
 release
+temp_config.json
+temp_log.txt
+keymapuino-gui/config.json
+*.conf
