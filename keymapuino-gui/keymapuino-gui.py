@@ -5,6 +5,7 @@ import subprocess
 import threading
 import os
 import signal
+import sys
 
 class ConfigGeneratorApp:
     def __init__(self, root):
@@ -30,6 +31,7 @@ class ConfigGeneratorApp:
 
         self.pin_listbox = tk.Listbox(pin_frame, height=10)
         self.pin_listbox.pack(side="left", fill="both", expand=True, padx=5, pady=5)
+        self.pin_listbox.bind("<<ListboxSelect>>", self.show_pin_details)
 
         btn_frame = ttk.Frame(pin_frame)
         btn_frame.pack(side="right", fill="y")
@@ -89,22 +91,29 @@ class ConfigGeneratorApp:
         dialog = tk.Toplevel(self.root)
         dialog.title(f"Thresholds for {pin}")
 
+        container = ttk.Frame(dialog)
+        container.pack(padx=5, pady=5)
+
         entries = []
+
         def add_entry():
-            frame = ttk.Frame(dialog)
-            frame.pack(padx=5, pady=2)
+            frame = ttk.Frame(container)
+            frame.pack(pady=2, fill="x")
+            ttk.Label(frame, text="Key:").pack(side="left")
             key = ttk.Entry(frame, width=5)
-            low = ttk.Entry(frame, width=5)
-            high = ttk.Entry(frame, width=5)
-            hold = ttk.Entry(frame, width=5)
             key.pack(side="left", padx=2)
+            ttk.Label(frame, text="Low:").pack(side="left")
+            low = ttk.Entry(frame, width=5)
             low.pack(side="left", padx=2)
+            ttk.Label(frame, text="High:").pack(side="left")
+            high = ttk.Entry(frame, width=5)
             high.pack(side="left", padx=2)
+            ttk.Label(frame, text="Hold(ms):").pack(side="left")
+            hold = ttk.Entry(frame, width=5)
             hold.pack(side="left", padx=2)
             entries.append((key, low, high, hold))
 
-        for _ in range(2):
-            add_entry()
+        add_entry()
 
         ttk.Button(dialog, text="Add Another Threshold", command=add_entry).pack(pady=5)
 
@@ -125,6 +134,25 @@ class ConfigGeneratorApp:
             dialog.destroy()
 
         ttk.Button(dialog, text="OK", command=submit).pack(pady=5)
+
+    def show_pin_details(self, event):
+        selection = self.pin_listbox.curselection()
+        if not selection:
+            return
+        index = selection[0]
+        pin = list(self.config["key_mapping"].keys())[index]
+        value = self.config["key_mapping"][pin]
+
+        detail_win = tk.Toplevel(self.root)
+        detail_win.title(f"Pin {pin} Details")
+        txt = tk.Text(detail_win, wrap="word")
+        txt.pack(fill="both", expand=True)
+        if isinstance(value, list):
+            for item in value:
+                txt.insert("end", f"Key: {item['key']}, Threshold: {item['threshold']}, Hold Time: {item['hold_time_ms']} ms\n")
+        else:
+            txt.insert("end", f"Key: {value['key']}\n")
+        txt.config(state="disabled")
 
     def remove_pin(self):
         selected = self.pin_listbox.curselection()
@@ -167,7 +195,18 @@ class ConfigGeneratorApp:
 
         try:
             cmd = ["bin/keymapuino-cli.exe", "--config", config_path, "--log", "2"]
-            self.proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, bufsize=1)
+
+            creationflags = subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == "win32" else 0
+
+            self.proc = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                bufsize=1,
+                creationflags=creationflags
+            )
+
             self.update_status("starting")
             self.run_button.pack_forget()
             self.stop_button.pack(side="left", padx=5)
@@ -178,7 +217,10 @@ class ConfigGeneratorApp:
 
     def stop_program(self):
         if self.proc and self.proc.poll() is None:
-            self.proc.send_signal(signal.SIGINT)
+            if sys.platform == "win32":
+                self.proc.send_signal(signal.CTRL_BREAK_EVENT)
+            else:
+                self.proc.send_signal(signal.SIGINT)
             self.proc.wait()
         self.update_status("finished")
         self.stop_button.pack_forget()

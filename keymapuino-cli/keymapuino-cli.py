@@ -14,7 +14,7 @@ LOG_LEVEL = args.log
 
 def log(message, level=1):
     if LOG_LEVEL >= level:
-        print(message)
+        print(message, flush=True)
 
 with open(args.config) as config_file:
     config = json.load(config_file)
