@@ -14,7 +14,7 @@ import tkinter.messagebox as messagebox
 
 class KeymapuinoGUI:
     def __init__(self, root):
-        self.version = "v1.0.1"
+        self.version = "v1.0.2"
         
         self.root = root
         self.root.title("Keymapuino")
