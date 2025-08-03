@@ -1,16 +1,16 @@
 @echo off
 setlocal
 
-REM Ścieżki źródłowe
+REM Paths for source files
 set CLI_SRC=keymapuino-cli\keymapuino-cli.py
 set GUI_SRC=keymapuino-gui\keymapuino-gui.py
 
-REM Ścieżki wyjściowe
-set RELEASE_DIR=release\windows
+REM Paths for output
+set RELEASE_DIR=release
 set CLI_OUT=%RELEASE_DIR%\bin
 set GUI_OUT=%RELEASE_DIR%
 
-REM Czyszczenie poprzednich buildów
+REM Clean up previous builds
 rd /s /q dist
 rd /s /q build
 del /q *.spec
@@ -23,7 +23,7 @@ pyinstaller --onefile --windowed --distpath "%GUI_OUT%" --name keymapuino-gui %G
 
 echo Build complete. Files are in %RELEASE_DIR%
 
-REM Czyszczenie buildów
+REM Clear up temporary files
 rd /s /q dist
 rd /s /q build
 del /q *.spec
