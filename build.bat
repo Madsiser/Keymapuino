@@ -6,7 +6,7 @@ set CLI_SRC=keymapuino-cli\keymapuino-cli.py
 set GUI_SRC=keymapuino-gui\keymapuino-gui.py
 
 REM Paths for output
-set RELEASE_DIR=release
+set RELEASE_DIR=release/Keymapuino
 set CLI_OUT=%RELEASE_DIR%\bin
 set GUI_OUT=%RELEASE_DIR%
 

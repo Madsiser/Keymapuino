@@ -4,7 +4,7 @@ set -e
 CLI_SRC="keymapuino-cli/keymapuino-cli.py"
 GUI_SRC="keymapuino-gui/keymapuino-gui.py"
 
-RELEASE_DIR="release"
+RELEASE_DIR="release/Keymapuino"
 CLI_OUT="$RELEASE_DIR/bin"
 GUI_OUT="$RELEASE_DIR"
 
