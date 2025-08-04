@@ -18,7 +18,7 @@ class KeymapuinoGUI:
         
         self.root = root
         self.root.title("Keymapuino")
-        self.config = {"port": "/dev/ttyUSB0", "key_mapping": {}}
+        self.config = {"port": " ", "key_mapping": {}}
         self.proc = None
         
         BASE_DIR = os.path.dirname(os.path.abspath(sys.argv[0]))
@@ -41,7 +41,7 @@ class KeymapuinoGUI:
         # self.port_entry.pack(side="left", fill="x", expand=True)
         self.port_combo = ttk.Combobox(port_frame, values=self.get_serial_ports(), state="normal")
         self.port_combo.pack(side="left", fill="x", expand=True, padx=5)
-        self.port_combo.set("/dev/ttyUSB0")
+        self.port_combo.set(" ")
         ttk.Button(port_frame, text="Refresh", command=self.refresh_ports).pack(side="left", padx=5)
 
 
