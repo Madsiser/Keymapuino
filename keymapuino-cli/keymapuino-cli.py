@@ -46,7 +46,7 @@ class KeymapuinoCLI:
         self.ser = serial.Serial(self.port, 9600, timeout=1)
 
     def handle_sigint(self, signum, frame):
-        self.log("\n[INFO] Otrzymano SIGINT. Kończenie działania...", level=1)
+        self.log("\n[INFO] Shutting down...", level=1)
         self.running = False
 
     def send_and_confirm(self, cmd):
