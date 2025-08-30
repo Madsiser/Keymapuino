@@ -1,1 +1,1 @@
-v1.0.2 Build 03.08.2025 Arch Linux x64
+v2.0.1 Build 30.09.2025 Arch Linux x64

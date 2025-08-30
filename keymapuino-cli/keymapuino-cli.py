@@ -19,7 +19,6 @@ import importlib
 from pynput.keyboard import Controller
 
 class CoreAPI:
-    """Uproszczone API dla pluginów - tylko wysyłanie danych i logowanie."""
     def __init__(self, controller, log_function, plugin_name="Core"):
         self.controller = controller
         self._log = log_function
@@ -45,7 +44,6 @@ class CoreAPI:
         self._log(f"[Plugin: {self._plugin_name}] {message}", level=numeric_level)
 
 class ArduinoController:
-    # ... (bez zmian)
     def __init__(self, port, baud_rate=9600, timeout=1, log_func=print):
         try: self.ser = serial.Serial(port, baud_rate, timeout=timeout)
         except serial.SerialException as e: print(f"[ERROR] Could not open serial port '{port}': {e}"); sys.exit(1)
@@ -129,6 +127,7 @@ class KeymapuinoCLI:
         self.log("Sending configuration to Arduino...", level=1)
         self.controller.clear_all()
 
+        self.log("Configuring pins for key mapping...", level=2)
         for pin, mapping in self.key_mapping.items():
             is_analog = isinstance(mapping, list)
             mode = "input" if is_analog else "pullup"
@@ -136,14 +135,19 @@ class KeymapuinoCLI:
             read_type = "analog" if is_analog else "digital"
             self.controller.start_reading(pin, read_type)
 
+        self.log("Configuring pins for plugins...", level=2)
         for plugin in self.plugins:
-            if hasattr(plugin, 'settings'):
-                pin = plugin.settings.get("pin"); pin_type = plugin.settings.get("type")
-                if pin is None or pin_type is None: continue
-                if pin_type in ["digital", "pwm"]: mode_to_set = "output"
-                elif pin_type == "servo": mode_to_set = "servo"
-                else: continue
-                self.controller.configure_pin(pin, mode_to_set)
+            if hasattr(plugin, 'get_pins_to_setup'):
+                pins_to_setup = plugin.get_pins_to_setup()
+                for pin, setup in pins_to_setup.items():
+                    mode = setup.get('mode')
+                    read_type = setup.get('read')
+
+                    if mode:
+                        self.controller.configure_pin(pin, mode)
+                    if read_type:
+                        self.controller.start_reading(pin, read_type)
+                        
         self.log("Configuration sent successfully.", level=1)
 
     def main_loop(self):
@@ -172,6 +176,7 @@ class KeymapuinoCLI:
                 hold_required = mapping.get('hold_time_ms', 0) / 1000.0
                 in_range = t_min <= value <= t_max
                 state = self.key_states[key]
+                self.log(f"Key {key}: in_range={in_range}, pressed={state['pressed']}", level=4)
                 if in_range:
                     if not state['pressed']:
                         if 'range_enter_time' not in state: state['range_enter_time'] = time.time()

@@ -1,0 +1,33 @@
+{
+  "window_title": "Servo Sweeper Configuration",
+  "data_model": {
+    "pin": null,
+    "step_delay_ms": 50,
+    "step_size": 2
+  },
+  "layout": {
+    "grid": [
+      {
+        "row": 0,
+        "widgets": [
+          { "type": "label", "text": "Servo Pin:", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "pin_entry", "bind_to": "pin", "var_type": "integer", "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      },
+      {
+        "row": 1,
+        "widgets": [
+          { "type": "label", "text": "Step Delay (ms):", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "delay_entry", "bind_to": "step_delay_ms", "var_type": "integer", "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      },
+      {
+        "row": 2,
+        "widgets": [
+          { "type": "label", "text": "Step Size (degrees):", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "step_entry", "bind_to": "step_size", "var_type": "integer", "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      }
+    ]
+  }
+}

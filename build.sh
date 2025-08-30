@@ -16,6 +16,8 @@ pyinstaller --onefile --distpath "$CLI_OUT" --name keymapuino-cli "$CLI_SRC"
 echo "Building keymapuino-gui..."
 pyinstaller --onefile --distpath "$GUI_OUT" --name keymapuino-gui "$GUI_SRC"
 
+cp -r plugins "$RELEASE_DIR/plugins"
+
 chmod +x "$CLI_OUT/keymapuino-cli"
 chmod +x "$GUI_OUT/keymapuino-gui"
 

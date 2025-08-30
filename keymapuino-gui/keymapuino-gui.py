@@ -163,7 +163,7 @@ class PluginConfigDialog(tk.Toplevel):
 
 class KeymapuinoGUI:
     def __init__(self, root):
-        self.version = "v5.0.1"
+        self.version = "v2.0.1"
         self.root = root
         self.root.title("Keymapuino")
         self.proc = None
@@ -198,7 +198,7 @@ class KeymapuinoGUI:
         keymap_tab = ttk.Frame(self.notebook, padding=5)
         plugins_tab = ttk.Frame(self.notebook, padding=5)
         self.notebook.add(keymap_tab, text="Key Mapping")
-        self.notebook.add(plugins_tab, text="Plugins (Output)")
+        self.notebook.add(plugins_tab, text="Plugins")
         
         self.keymap_listbox = tk.Listbox(keymap_tab, height=10)
         self.keymap_listbox.pack(side="left", fill="both", expand=True, padx=5, pady=5)

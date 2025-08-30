@@ -4,7 +4,7 @@
     "7": {
       "key": "a"
     },
-    "a0": [
+    "A0": [
       {
         "key": "b",
         "threshold": [
@@ -23,5 +23,14 @@
       }
     ]
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "servo_sweeper",
+      "settings": {
+        "pin": 10,
+        "step_delay_ms": 50,
+        "step_size": 2
+      }
+    }
+  ]
 }

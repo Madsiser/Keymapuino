@@ -6,7 +6,7 @@ set CLI_SRC=keymapuino-cli\keymapuino-cli.py
 set GUI_SRC=keymapuino-gui\keymapuino-gui.py
 
 REM Paths for output
-set RELEASE_DIR=release/Keymapuino
+set RELEASE_DIR=release\Keymapuino
 set CLI_OUT=%RELEASE_DIR%\bin
 set GUI_OUT=%RELEASE_DIR%
 
@@ -20,6 +20,12 @@ pyinstaller --onefile --distpath "%CLI_OUT%" --name keymapuino-cli %CLI_SRC%
 
 echo Building keymapuino-gui...
 pyinstaller --onefile --windowed --distpath "%GUI_OUT%" --name keymapuino-gui %GUI_SRC%
+
+REM Copy plugin folder if it exists
+if exist "plugins" (
+  echo Copying plugins folder to %RELEASE_DIR%\plugins...
+  xcopy /E /I /Y "plugins" "%RELEASE_DIR%\plugins" >nul
+)
 
 echo Build complete. Files are in %RELEASE_DIR%
 
