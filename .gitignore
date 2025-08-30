@@ -7,3 +7,7 @@ temp_config.json
 temp_log.txt
 keymapuino-gui/config.json
 *.conf
+*.pyc
+__pycache__/
+*.pyo
+*.pyd

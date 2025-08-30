@@ -1,0 +1,13 @@
+STARTING
+Sending configuration to Arduino...
+Configuration sent successfully.
+Pressed key: a
+Auto-released key: a
+Pressed key: a
+Auto-released key: a
+Pressed key: a
+Auto-released key: a
+
+[INFO] Shutting down...
+Cleaning up...
+Serial port closed. Exiting.

@@ -1,0 +1,49 @@
+{
+  "port": "/dev/ttyV0",
+  "plugins": [
+    {
+      "name": "key_presser",
+      "settings": {
+        "mappings": {
+          "7": {
+            "key": "a"
+          },
+          "a0": [
+            {
+              "key": "z",
+              "threshold": [
+                10,
+                100
+              ],
+              "hold_time_ms": 200
+            },
+            {
+              "key": "x",
+              "threshold": [
+                150,
+                200
+              ],
+              "hold_time_ms": 200
+            }
+          ],
+          "a1": [
+            {
+              "key": "c",
+              "threshold": [
+                150,
+                200
+              ],
+              "hold_time_ms": 200
+            }
+          ]
+        },
+        "max_hold_time_ms": 100,
+        "current_analog_pin": "a1",
+        "analog_key_entry": "c",
+        "analog_low_entry": "150",
+        "analog_high_entry": "200",
+        "analog_hold_entry": "200"
+      }
+    }
+  ]
+}

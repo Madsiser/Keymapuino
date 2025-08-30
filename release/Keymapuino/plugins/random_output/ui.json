@@ -1,0 +1,37 @@
+{
+  "window_title": "Random Output Configuration",
+  "layout": {
+    "grid": [
+      {
+        "row": 0,
+        "widgets": [
+          { "type": "label", "text": "Pin Number:", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "pin", "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      },
+      {
+        "row": 1,
+        "widgets": [
+          { "type": "label", "text": "Output Type:", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "combobox", "name": "type", "options": ["pwm", "digital", "servo"], "default": "pwm", "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      },
+      {
+        "row": 2,
+        "widgets": [
+          { "type": "label", "text": "Update Interval (ms):", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "update_interval_ms", "default": 500, "grid": {"column": 1, "sticky": "ew"} }
+        ]
+      },
+      {
+        "row": 3,
+        "widgets": [
+          { "type": "label", "text": "Value Range:", "grid": {"column": 0, "sticky": "w"} },
+          { "type": "entry", "name": "min_value", "default": 0, "width": 10, "grid": {"column": 1, "sticky": "e"} },
+          { "type": "label", "text": "to", "grid": {"column": 2} },
+          { "type": "entry", "name": "max_value", "default": 255, "width": 10, "grid": {"column": 3, "sticky": "w"} }
+        ]
+      }
+    ]
+  }
+}
