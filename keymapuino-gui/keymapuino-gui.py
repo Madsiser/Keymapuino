@@ -371,9 +371,12 @@ class KeymapuinoGUI:
 
     def stop_program(self):
         if self.proc and self.proc.poll() is None:
-            if sys.platform == "win32": self.proc.send_signal(signal.CTRL_BREAK_EVENT)
+            if sys.platform == "win32": self.proc.terminate()
             else: self.proc.send_signal(signal.SIGINT)
-            self.proc.wait()
+            try:
+                self.proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                self.proc.kill()
         self.update_status("finished")
         if self.root.winfo_exists():
             self.stop_button.pack_forget()
